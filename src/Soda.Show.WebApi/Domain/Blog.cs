@@ -10,6 +10,7 @@ public class Blog : EntityBase, ISoftDelete, ICreator, IModifier
     public Guid CreatorId { get; set; }
     public DateTime CreateTime { get; set; }
     public Guid? ModifierId { get; set; }
+    public User? Modifier { get; set; }
     public DateTime? UpdateTime { get; set; }
 
     [MaxLength(200)]
@@ -34,7 +35,7 @@ public class Blog : EntityBase, ISoftDelete, ICreator, IModifier
         }
     }
 
-    public required User Creator { get; set; }
+    public User? Creator { get; set; }
     public required string Content { get; set; }
 
 

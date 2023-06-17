@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\Base\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Soda.Show.Shared\Soda.Show.Shared.csproj" />
     <ProjectReference Include="..\Soda.Show.Common\Soda.Show.Common.csproj" />
   </ItemGroup>

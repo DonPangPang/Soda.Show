@@ -6,6 +6,7 @@ public class FileInfo : EntityBase, IDelete, ICreator
 {
     public bool Deleted { get; set; }
     public Guid CreatorId { get; set; }
+    public User? Creator { get; set; }
     public DateTime CreateTime { get; set; }
 
     public required string Path { get; set; }

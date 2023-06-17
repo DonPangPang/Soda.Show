@@ -6,6 +6,7 @@ public class VersionRecord : EntityBase, ISoftDelete, ICreator
 {
     public bool Deleted { get; set; }
     public Guid CreatorId { get; set; }
+    public User? Creator { get; set; }
     public DateTime CreateTime { get; set; }
     public Guid? ModifierId { get; set; }
     public DateTime? UpdateTime { get; set; }
