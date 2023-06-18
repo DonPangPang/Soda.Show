@@ -1,3 +1,4 @@
+using Soda.AutoMapper;
 using Soda.Show.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,8 @@ builder.Services.AddDb();
 
 
 var app = builder.Build();
+
+app.InitSodaMapper();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

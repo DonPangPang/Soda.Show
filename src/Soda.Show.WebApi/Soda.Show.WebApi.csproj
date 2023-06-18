@@ -15,6 +15,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.7" />
+    <PackageReference Include="Soda.AutoMapper" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
