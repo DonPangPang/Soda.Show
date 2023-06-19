@@ -5,7 +5,7 @@ public interface IEntityBase
     public Guid Id { get; set; }
 }
 
-public class EntityBase : IEntityBase
+public abstract class EntityBase : IEntityBase
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 }

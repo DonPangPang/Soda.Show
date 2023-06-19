@@ -1,4 +1,5 @@
 using Soda.AutoMapper;
+using Soda.Show.WebApi.Base;
 using Soda.Show.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAutoMapper(opts =>
+{
+    opts.RecognizePrefixes("V");
+});
+
 
 builder.Services.AddDb();
 
@@ -17,6 +23,7 @@ builder.Services.AddDb();
 var app = builder.Build();
 
 app.InitSodaMapper();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

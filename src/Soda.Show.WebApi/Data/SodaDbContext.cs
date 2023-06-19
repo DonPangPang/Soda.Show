@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Soda.Show.WebApi.Base;
 using Soda.Show.WebApi.Domain;
 
 namespace Soda.Show.WebApi.Data
@@ -12,6 +13,12 @@ namespace Soda.Show.WebApi.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
+            foreach (var type in typeof(IEntityBase).Assembly.GetTypes().Where(t => !t.IsAbstract && t.IsSubclassOf(typeof(IEntityBase))))
+            {
+                builder.Model.AddEntityType(type.GetType());
+            }
+
             builder.Entity<Account>().HasData(new Account
             {
                 Username = "admin",
