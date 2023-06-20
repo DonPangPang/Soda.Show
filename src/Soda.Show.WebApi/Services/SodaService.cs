@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Humanizer;
+using Microsoft.EntityFrameworkCore;
 using Soda.AutoMapper;
 using Soda.Show.Shared;
 using Soda.Show.Shared.Parameters;
@@ -18,21 +19,21 @@ public interface ISodaService<TEntity, TViewModel> where TEntity : EntityBase wh
 
     Task<IEnumerable<TViewModel>> GetAsync(IEnumerable<Guid> ids);
 
-    Task<bool> UpdateAsync(TEntity entity);
+    Task<bool> UpdateAsync(TViewModel dto);
 
-    Task<bool> UpdateAsync(IEnumerable<TEntity> entities);
+    Task<bool> UpdateAsync(IEnumerable<TViewModel> dtos);
 
-    Task<bool> DeleteAsync(TEntity entity);
+    Task<bool> DeleteAsync(TViewModel dto);
 
-    Task<bool> DeleteAsync(IEnumerable<TEntity> entities);
+    Task<bool> DeleteAsync(IEnumerable<TViewModel> dtos);
 
     Task<bool> DeleteAsync(Guid id);
 
     Task<bool> DeleteAsync(IEnumerable<Guid> ids);
 
-    Task<bool> AddAsync(TEntity entity);
+    Task<bool> AddAsync(TViewModel dto);
 
-    Task<bool> AddAsync(IEnumerable<TEntity> entities);
+    Task<bool> AddAsync(IEnumerable<TViewModel> dtos);
 }
 
 public class SodaService<TEntity, TViewModel> : ISodaService<TEntity, TViewModel> where TEntity : EntityBase where TViewModel : class, IViewModel
@@ -44,40 +45,50 @@ public class SodaService<TEntity, TViewModel> : ISodaService<TEntity, TViewModel
         _sodaRepository = sodaRepository;
     }
 
-    public async Task<bool> AddAsync(TEntity entity)
+    public async Task<bool> AddAsync(TViewModel dto)
     {
-        if (entity is null) throw new ArgumentNullException(nameof(entity));
+        if (dto is null) throw new ArgumentNullException(nameof(dto));
+
+        var entity = dto.MapTo<TEntity>();
 
         _sodaRepository.Db.Add(entity);
         return await _sodaRepository.SaveAsync();
     }
 
-    public async Task<bool> AddAsync(IEnumerable<TEntity> entities)
+    public async Task<bool> AddAsync(IEnumerable<TViewModel> dtos)
     {
-        if (entities is null || !entities.Any()) throw new ArgumentNullException(nameof(entities));
+        if (dtos is null || !dtos.Any()) throw new ArgumentNullException(nameof(dtos));
+
+        var entities = dtos.MapTo<TEntity>();
 
         await _sodaRepository.Db.AddRangeAsync(entities);
 
         return await _sodaRepository.SaveAsync();
     }
 
-    public async Task<bool> DeleteAsync(TEntity entity)
+    public async Task<bool> DeleteAsync(TViewModel dto)
     {
-        if (entity is null) throw new ArgumentNullException(nameof(entity));
+        if (dto is null) throw new ArgumentNullException(nameof(dto));
+
+        var entity = dto.MapTo<TEntity>();
+
         _sodaRepository.Db.Remove(entity);
         return await _sodaRepository.SaveAsync();
     }
 
-    public async Task<bool> DeleteAsync(IEnumerable<TEntity> entities)
+    public async Task<bool> DeleteAsync(IEnumerable<TViewModel> dtos)
     {
-        if (entities is null || !entities.Any()) throw new ArgumentNullException(nameof(entities));
+        if (dtos is null || !dtos.Any()) throw new ArgumentNullException(nameof(dtos));
+
+        var entities = dtos.MapTo<TEntity>();
+
         _sodaRepository.Db.RemoveRange(entities);
         return await _sodaRepository.SaveAsync();
     }
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var entity = _sodaRepository.Query<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
+        var entity = await _sodaRepository.Query<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
 
         if (entity is null) return true;
 
@@ -115,36 +126,37 @@ public class SodaService<TEntity, TViewModel> : ISodaService<TEntity, TViewModel
         return await _sodaRepository.Query<TEntity>().Where(x => ids.Contains(x.Id)).Map<TEntity, TViewModel>().ToListAsync();
     }
 
-    public async Task<bool> UpdateAsync(TEntity entity)
+    public async Task<bool> UpdateAsync(TViewModel dto)
     {
-        if (entity is null)
+        if (dto is null)
         {
-            throw new ArgumentNullException(nameof(entity));
+            throw new ArgumentNullException(nameof(dto));
         }
 
-        var old = await GetAsync(entity.Id);
+        var old = await GetAsync(dto.Id);
         if (old is null)
         {
-            _sodaRepository.Db.Add(entity);
+            _sodaRepository.Db.Add(dto);
         }
         else
         {
-            old.Map(entity);
+            old.Map(dto);
 
-            _sodaRepository.Db.Update(entity);
+            _sodaRepository.Db.Update(dto);
         }
 
         return await _sodaRepository.SaveAsync();
     }
 
-    public async Task<bool> UpdateAsync(IEnumerable<TEntity> entities)
+    public async Task<bool> UpdateAsync(IEnumerable<TViewModel> dtos)
     {
-        if (entities is null || !entities.Any())
+        if (dtos is null || !dtos.Any())
         {
-            throw new ArgumentNullException(nameof(entities));
+            throw new ArgumentNullException(nameof(dtos));
         }
+        var entity = dtos.MapTo<TEntity>();
 
-        _sodaRepository.Db.UpdateRange(entities);
+        _sodaRepository.Db.UpdateRange(entity);
         return await _sodaRepository.SaveAsync();
     }
 }

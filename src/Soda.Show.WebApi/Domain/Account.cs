@@ -3,7 +3,7 @@ using Soda.Show.WebApi.Domain.Base;
 
 namespace Soda.Show.WebApi.Domain;
 
-public class Account : EntityBase, ISoftDelete, ICreator, IModifier
+public class Account : EntityBase, ISoftDelete, ICreator, IModifier, IEnabled
 {
     public bool Deleted { get; set; }
     public Guid CreatorId { get; set; }
@@ -29,4 +29,5 @@ public class Account : EntityBase, ISoftDelete, ICreator, IModifier
     public User? User { get; set; }
 
     public bool IsSuper { get; set; } = false;
+    public bool Enabled { get; set; } = true;
 }
