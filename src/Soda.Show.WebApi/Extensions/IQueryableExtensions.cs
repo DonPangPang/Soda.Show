@@ -2,7 +2,9 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using Soda.Show.Shared;
-using Soda.Show.WebApi.Base;
+using Soda.Show.Shared.Attributes;
+using Soda.Show.Shared.Parameters;
+using Soda.Show.WebApi.Domain.Base;
 using Soda.Show.WebApi.Helpers;
 
 namespace Soda.Show.WebApi.Extensions;

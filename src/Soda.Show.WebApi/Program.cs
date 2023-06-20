@@ -3,7 +3,6 @@ using Newtonsoft.Json.Serialization;
 using Soda.AutoMapper;
 using Soda.Show.Shared.ViewModels;
 using Soda.Show.WebApi;
-using Soda.Show.WebApi.Base;
 using Soda.Show.WebApi.Data;
 using Soda.Show.WebApi.Domain;
 using Soda.Show.WebApi.Extensions;

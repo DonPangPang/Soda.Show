@@ -1,5 +1,5 @@
-﻿using Soda.Show.WebApi.Base;
-using Soda.Show.WebApi.Data;
+﻿using Soda.Show.WebApi.Data;
+using Soda.Show.WebApi.Domain.Base;
 
 namespace Soda.Show.WebApi.Repositories;
 
