@@ -10,6 +10,9 @@ public class BlogParameters : Parameters, IDateRange, IPaging, ISorting
     [CompareFunc(Operation.Contains, "Tags.Name")]
     public string? Tag { get; set; }
 
+    [CompareFunc(Operation.Contains, "Groups.Name")]
+    public string? Group { get; set; }
+
     public DateTime? StartTime { get; set; }
     public DateTime? EndTime { get; set; }
     public int Page { get; set; }
