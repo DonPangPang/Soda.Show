@@ -1,15 +1,15 @@
-﻿using Soda.Show.Shared;
-using Soda.Show.WebApi.Base;
-using Soda.Show.WebApi.Helpers;
-using System.Linq.Dynamic.Core;
+﻿using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Reflection;
+using Soda.Show.Shared;
+using Soda.Show.WebApi.Base;
+using Soda.Show.WebApi.Helpers;
 
-namespace Soda.Show.WebApi;
+namespace Soda.Show.WebApi.Extensions;
 
 /// <summary>
 /// </summary>
-public static class IQueryableExtensions
+public static class QueryableExtensions
 {
     /// <summary>
     /// 进行排序

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
-namespace Soda.Show.Shared;
+
+namespace Soda.Show.Shared.Parameters;
 
 public interface IParameters
 {

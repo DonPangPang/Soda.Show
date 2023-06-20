@@ -1,4 +1,4 @@
-﻿namespace Soda.Show.WebApi;
+﻿namespace Soda.Show.Shared.Attributes;
 
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 public class CompareFuncAttribute : Attribute

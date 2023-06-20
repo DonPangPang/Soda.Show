@@ -1,15 +1,20 @@
 ﻿using Soda.Show.WebApi.Base;
 using Soda.Show.WebApi.Data;
 
-namespace Soda.Show.WebApi;
+namespace Soda.Show.WebApi.Repositories;
 
 public interface ISodaRepository
 {
     SodaDbContext Db { get; }
+
     IQueryable<T> Query<T>() where T : EntityBase;
+
     Task<bool> SaveAsync();
+
     Task BeginTransAsync();
+
     Task CommitTransAsync();
+
     Task RollbackAsync();
 }
 

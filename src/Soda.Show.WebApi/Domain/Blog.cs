@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Soda.Show.WebApi.Base;
+using Soda.Show.WebApi.Domain.Base;
 
 namespace Soda.Show.WebApi.Domain;
 
@@ -9,12 +9,16 @@ public class Blog : EntityBase, ISoftDelete, ICreator, IModifier
 {
     public bool Deleted { get; set; }
     public Guid CreatorId { get; set; }
+
     [NotMapped]
     public User? Creator { get; set; }
+
     public DateTime CreateTime { get; set; }
     public Guid? ModifierId { get; set; }
+
     [NotMapped]
     public User? Modifier { get; set; }
+
     public DateTime? UpdateTime { get; set; }
 
     [MaxLength(200)]
@@ -48,7 +52,6 @@ public class Blog : EntityBase, ISoftDelete, ICreator, IModifier
 
 public class Tag : EntityBase
 {
-
     [MaxLength(200)]
     public string Name { get; set; } = string.Empty;
 

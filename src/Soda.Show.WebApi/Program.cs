@@ -7,6 +7,7 @@ using Soda.Show.WebApi.Base;
 using Soda.Show.WebApi.Data;
 using Soda.Show.WebApi.Domain;
 using Soda.Show.WebApi.Extensions;
+using Soda.Show.WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,10 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(setup =>
     {
         setup.ReturnHttpNotAcceptable = true;
-        // 添加XML
-        // setup.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
-        // 将默认格式改为XML
-        // setup.OutputFormatters.Insert(0, new XmlDataContractSerializerOutputFormatter());
+        // 添加XML setup.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+        // 将默认格式改为XML setup.OutputFormatters.Insert(0, new XmlDataContractSerializerOutputFormatter());
     }).AddNewtonsoftJson(setup =>
         {
             setup.SerializerSettings.ContractResolver
@@ -61,12 +60,10 @@ builder.Services.AddAutoMapper(opts =>
     opts.CreateMap<Group, VGroup>().ReverseMap();
 }, AppDomain.CurrentDomain.GetAssemblies());
 
-
 builder.Services.AddDb();
 builder.Services.AddServices();
 
 builder.Services.AddScoped(typeof(ISodaService<,>), typeof(SodaService<,>));
-
 
 var app = builder.Build();
 

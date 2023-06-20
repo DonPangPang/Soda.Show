@@ -1,12 +1,14 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Soda.AutoMapper;
 using Soda.Show.Shared;
+using Soda.Show.Shared.Parameters;
 using Soda.Show.Shared.ViewModels;
-using Soda.Show.WebApi.Base;
+using Soda.Show.WebApi.Domain.Base;
+using Soda.Show.WebApi.Extensions;
 using Soda.Show.WebApi.Helpers;
+using Soda.Show.WebApi.Repositories;
 
-namespace Soda.Show.WebApi;
+namespace Soda.Show.WebApi.Services;
 
 public interface ISodaService<TEntity, TViewModel> where TEntity : EntityBase where TViewModel : class, IViewModel
 {

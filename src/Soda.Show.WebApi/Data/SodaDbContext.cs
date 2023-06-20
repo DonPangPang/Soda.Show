@@ -1,7 +1,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using Soda.Show.WebApi.Base;
 using Soda.Show.WebApi.Domain;
+using Soda.Show.WebApi.Domain.Base;
 
 namespace Soda.Show.WebApi.Data
 {
@@ -9,13 +9,14 @@ namespace Soda.Show.WebApi.Data
     {
         public SodaDbContext(DbContextOptions<SodaDbContext> options) : base(options)
         {
-
         }
+
         private static readonly MethodInfo ConfigureBasePropertiesMethodInfo = typeof(SodaDbContext)
                 .GetMethod(
                     nameof(ConfigGlobalFilter),
                     BindingFlags.Instance | BindingFlags.NonPublic
                 )!;
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             foreach (var type in typeof(EntityBase).Assembly.GetTypes().Where(t => !t.IsAbstract && !t.IsInterface && t.IsSubclassOf(typeof(EntityBase))))
@@ -67,11 +68,9 @@ namespace Soda.Show.WebApi.Data
             }
             catch (DbUpdateException)
             {
-
                 throw;
             }
         }
-
 
         private void AutoSetChangedEntities()
         {

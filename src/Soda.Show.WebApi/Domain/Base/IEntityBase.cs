@@ -1,13 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 
-namespace Soda.Show.WebApi.Base;
+namespace Soda.Show.WebApi.Domain.Base;
 
-// public interface EntityBase
-// {
-//     [Key]
-//     public Guid Id { get; set; }
-// }
+// public interface EntityBase { [Key] public Guid Id { get; set; } }
 
 public abstract class EntityBase //: EntityBase
 {

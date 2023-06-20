@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Soda.Show.WebApi;
+﻿using Soda.Show.Shared.Attributes;
 
-namespace Soda.Show.Shared;
+namespace Soda.Show.Shared.Parameters;
 
 public class BlogParameters : Parameters, IDateRange, IPaging, ISorting
 {

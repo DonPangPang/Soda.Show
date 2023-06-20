@@ -1,4 +1,4 @@
-namespace Soda.Show.WebApi.Base;
+namespace Soda.Show.WebApi.Domain.Base;
 
 public interface ISoftDelete
 {

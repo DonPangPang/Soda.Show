@@ -1,11 +1,12 @@
-﻿using System;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Soda.Show.Shared;
+using Soda.Show.Shared.Parameters;
 using Soda.Show.Shared.ViewModels;
-using Soda.Show.WebApi.Base;
+using Soda.Show.WebApi.Domain.Base;
+using Soda.Show.WebApi.Helpers;
+using Soda.Show.WebApi.Services;
 
-namespace Soda.Show.WebApi;
+namespace Soda.Show.WebApi.Controllers;
 
 [ApiController]
 [Route("[Controller]")]

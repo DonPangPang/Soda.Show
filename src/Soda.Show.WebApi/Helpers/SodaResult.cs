@@ -1,4 +1,4 @@
-﻿namespace Soda.Show.WebApi;
+﻿namespace Soda.Show.WebApi.Helpers;
 
 public class SodaResult
 {
