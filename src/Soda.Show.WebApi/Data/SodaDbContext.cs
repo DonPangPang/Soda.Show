@@ -18,14 +18,16 @@ namespace Soda.Show.WebApi.Data
                 )!;
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
-            foreach (var type in typeof(IEntityBase).Assembly.GetTypes().Where(t => !t.IsAbstract && t.IsSubclassOf(typeof(IEntityBase))))
+            foreach (var type in typeof(EntityBase).Assembly.GetTypes().Where(t => !t.IsAbstract && !t.IsInterface && t.IsSubclassOf(typeof(EntityBase))))
             {
-                builder.Model.AddEntityType(type.GetType());
-
-                if (type.IsAssignableFrom(typeof(ISoftDelete)))
+                if (builder.Model.FindEntityType(type) == null)
                 {
-                    ConfigureBasePropertiesMethodInfo.MakeGenericMethod(type).Invoke(null, new object[] { builder });
+                    builder.Model.AddEntityType(type);
+
+                    if (type.IsAssignableFrom(typeof(ISoftDelete)))
+                    {
+                        ConfigureBasePropertiesMethodInfo.MakeGenericMethod(type).Invoke(null, new object[] { builder });
+                    }
                 }
             }
 
@@ -73,7 +75,7 @@ namespace Soda.Show.WebApi.Data
 
         private void AutoSetChangedEntities()
         {
-            foreach (var dbEntityEntry in ChangeTracker.Entries<IEntityBase>())
+            foreach (var dbEntityEntry in ChangeTracker.Entries<EntityBase>())
             {
                 var baseEntity = dbEntityEntry.Entity;
                 switch (dbEntityEntry.State)
@@ -103,7 +105,7 @@ namespace Soda.Show.WebApi.Data
             }
         }
 
-        private static void ConfigGlobalFilter<TEntity>(ModelBuilder builder) where TEntity : class, IEntityBase, ISoftDelete
+        private static void ConfigGlobalFilter<TEntity>(ModelBuilder builder) where TEntity : class, ISoftDelete
         {
             builder.Entity<TEntity>().HasQueryFilter(x => !x.Deleted);
         }

@@ -1,11 +1,16 @@
-﻿namespace Soda.Show.WebApi.Base;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
-public interface IEntityBase
-{
-    public Guid Id { get; set; }
-}
+namespace Soda.Show.WebApi.Base;
 
-public abstract class EntityBase : IEntityBase
+// public interface EntityBase
+// {
+//     [Key]
+//     public Guid Id { get; set; }
+// }
+
+public abstract class EntityBase //: EntityBase
 {
+    [Key]
     public Guid Id { get; set; } = Guid.NewGuid();
 }

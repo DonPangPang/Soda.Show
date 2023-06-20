@@ -6,7 +6,7 @@ namespace Soda.Show.WebApi;
 public interface ISodaRepository
 {
     SodaDbContext Db { get; }
-    IQueryable<T> Query<T>() where T : class, IEntityBase;
+    IQueryable<T> Query<T>() where T : EntityBase;
     Task<bool> SaveAsync();
     Task BeginTransAsync();
     Task CommitTransAsync();
@@ -25,7 +25,7 @@ public class SodaRepository : ISodaRepository
 
     public SodaDbContext Db => _dbContext;
 
-    public IQueryable<T> Query<T>() where T : class, IEntityBase
+    public IQueryable<T> Query<T>() where T : EntityBase
     {
         return _dbContext.Set<T>() as IQueryable<T>;
     }

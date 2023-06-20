@@ -10,12 +10,11 @@ public class Parameters : IParameters
 {
     public IEnumerable<PropertyInfo> GetProperties()
     {
-        var types = GetType().GetProperties().Where(p =>
-            !typeof(IPaging).IsAssignableFrom(p.DeclaringType) &&
-            !typeof(ISorting).IsAssignableFrom(p.DeclaringType) &&
-            !typeof(IDateRange).IsAssignableFrom(p.DeclaringType));
+        var properties = GetType().GetProperties().Where(p => !typeof(IPaging).GetProperties().Select(x => x.Name).Contains(p.Name) &&
+                            !typeof(ISorting).GetProperties().Select(x => x.Name).Contains(p.Name) &&
+                            !typeof(IDateRange).GetProperties().Select(x => x.Name).Contains(p.Name) && p.GetValue(this) != null);
 
-        return types.Where(x => x.GetValue(this) != null);
+        return properties;
     }
 }
 

@@ -90,16 +90,18 @@ public static class IQueryableExtensions
 
                 var attr = property.GetCustomAttribute<CompareFuncAttribute>();
 
-                source = attr?.Comparer switch
+                var comparer = attr?.Comparer switch
                 {
-                    Operation.Contains => source.ContainsOper<T>(attr.PropertyName ?? property.Name, value),
-                    Operation.GreaterThan => source.GreaterThanOper<T>(attr.PropertyName ?? property.Name, value),
-                    Operation.LessThan => source.LessThanOper<T>(attr.PropertyName ?? property.Name, value),
-                    Operation.GreaterThanOrEqual => source.GreaterThanOrEqualOper<T>(attr.PropertyName ?? property.Name, value),
-                    Operation.LessThanOrEqual => source.LessThanOrEqualOper<T>(attr.PropertyName ?? property.Name, value),
+                    Operation.Contains => ".Contains",
+                    Operation.GreaterThan => ">",
+                    Operation.LessThan => "<",
+                    Operation.GreaterThanOrEqual => ">=",
+                    Operation.LessThanOrEqual => "<=",
                     Operation.Equal or
-                    _ => source.WhereOper<T>(attr?.PropertyName ?? property.Name, value)
+                    _ => "==",
                 };
+
+                source = source.Where(DeepPropertyExpression((attr?.PropertyName ?? property.Name).Split("."), comparer), value);
             }
         }
 
@@ -107,6 +109,20 @@ public static class IQueryableExtensions
             return await source.ToPagedListAsync(paging);
         else
             return await PagedList<T>.CreateAsync(source, 1, 999);
+    }
+
+    private static string DeepPropertyExpression(string[] property, string comparer = "==", int deep = 0)
+    {
+        if (deep >= property.Length) return "";
+
+        if (deep == property.Length - 1)
+        {
+            return $"{property[deep]}{comparer}(@0)";
+        }
+        else
+        {
+            return $"{property[deep]}.Any({DeepPropertyExpression(property, comparer, ++deep)})";
+        }
     }
 
     public static Expression<Func<T, bool>> GetEqualExpression<T>(string propertyName, object propertyValue)
@@ -134,22 +150,27 @@ public static class IQueryableExtensions
     {
         return source.Where($"{propertyName} == @0", propertyValue);
     }
+
     public static IQueryable<T> ContainsOper<T>(this IQueryable<T> source, string propertyName, object propertyValue)
     {
         return source.Where($"{propertyName}.Contains(@0)", propertyValue);
     }
+
     public static IQueryable<T> GreaterThanOper<T>(this IQueryable<T> source, string propertyName, object propertyValue)
     {
         return source.Where($"{propertyName} > @0", propertyValue);
     }
+
     public static IQueryable<T> LessThanOper<T>(this IQueryable<T> source, string propertyName, object propertyValue)
     {
         return source.Where($"{propertyName} < @0", propertyValue);
     }
+
     public static IQueryable<T> GreaterThanOrEqualOper<T>(this IQueryable<T> source, string propertyName, object propertyValue)
     {
         return source.Where($"{propertyName} >= @0", propertyValue);
     }
+
     public static IQueryable<T> LessThanOrEqualOper<T>(this IQueryable<T> source, string propertyName, object propertyValue)
     {
         return source.Where($"{propertyName} <= @0", propertyValue);

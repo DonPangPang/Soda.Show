@@ -51,7 +51,7 @@ public class ApiControllerBase : ControllerBase
 }
 
 public class ApiControllerBase<TEntity, TViewModel, TParameters> : ApiControllerBase
-    where TEntity : class, IEntityBase
+    where TEntity : EntityBase
     where TViewModel : class, IViewModel
     where TParameters : class, IParameters
 {
@@ -63,7 +63,7 @@ public class ApiControllerBase<TEntity, TViewModel, TParameters> : ApiController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAsync([FromQuery] TParameters parameters)
+    public virtual async Task<IActionResult> GetAsync([FromQuery] TParameters parameters)
     {
         var res = await _service.GetAsync(parameters);
 
@@ -71,7 +71,7 @@ public class ApiControllerBase<TEntity, TViewModel, TParameters> : ApiController
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(Guid id)
+    public virtual async Task<IActionResult> GetByIdAsync(Guid id)
     {
         var res = await _service.GetAsync(id);
 
@@ -79,7 +79,7 @@ public class ApiControllerBase<TEntity, TViewModel, TParameters> : ApiController
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync([FromBody] TEntity entity)
+    public virtual async Task<IActionResult> UpdateAsync([FromBody] TEntity entity)
     {
         var res = await _service.UpdateAsync(entity);
 
@@ -87,7 +87,7 @@ public class ApiControllerBase<TEntity, TViewModel, TParameters> : ApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddAsync([FromBody] TEntity entity)
+    public virtual async Task<IActionResult> AddAsync([FromBody] TEntity entity)
     {
         var res = await _service.AddAsync(entity);
 
@@ -95,7 +95,7 @@ public class ApiControllerBase<TEntity, TViewModel, TParameters> : ApiController
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(Guid id)
+    public virtual async Task<IActionResult> DeleteAsync(Guid id)
     {
         var res = await _service.DeleteAsync(id);
 

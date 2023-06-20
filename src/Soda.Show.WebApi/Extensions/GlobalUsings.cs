@@ -13,7 +13,7 @@ public static class GlobalUsings
     {
         services.AddDbContext<SodaDbContext>(opts =>
         {
-            opts.UseSqlite("Filename=:memory:");
+            opts.UseSqlite("Data source=soda.db");
             //opts.UseSqlite("Data Source=soda.db");
             opts.ReplaceService<IMigrationsSqlGenerator, CustomMigrationsSqlGenerator>();
         });

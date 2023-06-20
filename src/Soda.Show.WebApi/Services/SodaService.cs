@@ -4,40 +4,36 @@ using Soda.AutoMapper;
 using Soda.Show.Shared;
 using Soda.Show.Shared.ViewModels;
 using Soda.Show.WebApi.Base;
+using Soda.Show.WebApi.Helpers;
 
 namespace Soda.Show.WebApi;
 
-public interface ISodaService
+public interface ISodaService<TEntity, TViewModel> where TEntity : EntityBase where TViewModel : class, IViewModel
 {
-
-}
-
-[Service(ServiceLifetime.Scoped)]
-public class SodaService
-{
-
-}
-
-
-public interface ISodaService<TEntity, TViewModel> where TEntity : class, IEntityBase where TViewModel : class, IViewModel
-{
-    Task<IEnumerable<TViewModel>> GetAsync(IParameters parameters);
+    Task<PagedList<TViewModel>> GetAsync(IParameters parameters);
 
     Task<TViewModel?> GetAsync(Guid id);
+
     Task<IEnumerable<TViewModel>> GetAsync(IEnumerable<Guid> ids);
+
     Task<bool> UpdateAsync(TEntity entity);
+
     Task<bool> UpdateAsync(IEnumerable<TEntity> entities);
+
     Task<bool> DeleteAsync(TEntity entity);
+
     Task<bool> DeleteAsync(IEnumerable<TEntity> entities);
+
     Task<bool> DeleteAsync(Guid id);
+
     Task<bool> DeleteAsync(IEnumerable<Guid> ids);
 
     Task<bool> AddAsync(TEntity entity);
-    Task<bool> AddAsync(IEnumerable<TEntity> entities);
 
+    Task<bool> AddAsync(IEnumerable<TEntity> entities);
 }
 
-public class SodaService<TEntity, TViewModel> : SodaService, ISodaService<TEntity, TViewModel> where TEntity : class, IEntityBase where TViewModel : class, IViewModel
+public class SodaService<TEntity, TViewModel> : ISodaService<TEntity, TViewModel> where TEntity : EntityBase where TViewModel : class, IViewModel
 {
     private readonly ISodaRepository _sodaRepository;
 
@@ -97,7 +93,7 @@ public class SodaService<TEntity, TViewModel> : SodaService, ISodaService<TEntit
         return await _sodaRepository.SaveAsync();
     }
 
-    public async Task<IEnumerable<TViewModel>> GetAsync(IParameters parameters)
+    public async Task<PagedList<TViewModel>> GetAsync(IParameters parameters)
     {
         return await _sodaRepository.Query<TEntity>().Map<TEntity, TViewModel>().QueryAsync(parameters);
     }
@@ -124,7 +120,7 @@ public class SodaService<TEntity, TViewModel> : SodaService, ISodaService<TEntit
             throw new ArgumentNullException(nameof(entity));
         }
 
-        var old = GetAsync(entity.Id);
+        var old = await GetAsync(entity.Id);
         if (old is null)
         {
             _sodaRepository.Db.Add(entity);
@@ -135,7 +131,6 @@ public class SodaService<TEntity, TViewModel> : SodaService, ISodaService<TEntit
 
             _sodaRepository.Db.Update(entity);
         }
-
 
         return await _sodaRepository.SaveAsync();
     }

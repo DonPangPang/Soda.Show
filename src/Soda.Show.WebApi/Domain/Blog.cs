@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Soda.Show.WebApi.Base;
 
@@ -8,13 +9,16 @@ public class Blog : EntityBase, ISoftDelete, ICreator, IModifier
 {
     public bool Deleted { get; set; }
     public Guid CreatorId { get; set; }
+    [NotMapped]
+    public User? Creator { get; set; }
     public DateTime CreateTime { get; set; }
     public Guid? ModifierId { get; set; }
+    [NotMapped]
     public User? Modifier { get; set; }
     public DateTime? UpdateTime { get; set; }
 
     [MaxLength(200)]
-    public required string Title { get; set; }
+    public string Title { get; set; } = string.Empty;
 
     public string? _description;
 
@@ -35,21 +39,18 @@ public class Blog : EntityBase, ISoftDelete, ICreator, IModifier
         }
     }
 
-    public User? Creator { get; set; }
-    public required string Content { get; set; }
-
+    public string Content { get; set; } = string.Empty;
 
     public ICollection<Tag>? Tags { get; set; } = new List<Tag>();
     public ICollection<Group>? Groups { get; set; } = new List<Group>();
-
-    public ICollection<FileInfo>? FileInfos { get; set; } = new List<FileInfo>();
+    public ICollection<FileResource>? FileInfos { get; set; } = new List<FileResource>();
 }
 
 public class Tag : EntityBase
 {
 
     [MaxLength(200)]
-    public required string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     public ICollection<Blog>? Blogs { get; set; }
 }
@@ -57,7 +58,7 @@ public class Tag : EntityBase
 public class Group : EntityBase
 {
     [MaxLength(200)]
-    public required string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     public ICollection<Blog>? Blogs { get; set; }
 }
