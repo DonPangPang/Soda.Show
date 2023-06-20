@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-namespace Soda.Show.WebApi;
+namespace Soda.Show.WebApi.Helpers;
 
 public class PagedList<T> : List<T>
 {

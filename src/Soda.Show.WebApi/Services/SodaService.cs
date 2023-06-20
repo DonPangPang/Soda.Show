@@ -7,6 +7,18 @@ using Soda.Show.WebApi.Base;
 
 namespace Soda.Show.WebApi;
 
+public interface ISodaService
+{
+
+}
+
+[Service(ServiceLifetime.Scoped)]
+public class SodaService
+{
+
+}
+
+
 public interface ISodaService<TEntity, TViewModel> where TEntity : class, IEntityBase where TViewModel : class, IViewModel
 {
     Task<IEnumerable<TViewModel>> GetAsync(IParameters parameters);
@@ -25,7 +37,7 @@ public interface ISodaService<TEntity, TViewModel> where TEntity : class, IEntit
 
 }
 
-public class SodaService<TEntity, TViewModel> : ISodaService<TEntity, TViewModel> where TEntity : class, IEntityBase where TViewModel : class, IViewModel
+public class SodaService<TEntity, TViewModel> : SodaService, ISodaService<TEntity, TViewModel> where TEntity : class, IEntityBase where TViewModel : class, IViewModel
 {
     private readonly ISodaRepository _sodaRepository;
 
@@ -112,7 +124,19 @@ public class SodaService<TEntity, TViewModel> : ISodaService<TEntity, TViewModel
             throw new ArgumentNullException(nameof(entity));
         }
 
-        _sodaRepository.Db.Update(entity);
+        var old = GetAsync(entity.Id);
+        if (old is null)
+        {
+            _sodaRepository.Db.Add(entity);
+        }
+        else
+        {
+            old.Map(entity);
+
+            _sodaRepository.Db.Update(entity);
+        }
+
+
         return await _sodaRepository.SaveAsync();
     }
 

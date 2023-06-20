@@ -1,4 +1,5 @@
 using Soda.AutoMapper;
+using Soda.Show.WebApi;
 using Soda.Show.WebApi.Base;
 using Soda.Show.WebApi.Extensions;
 
@@ -18,6 +19,9 @@ builder.Services.AddAutoMapper(opts =>
 
 
 builder.Services.AddDb();
+builder.Services.AddServices();
+
+// builder.Services.AddScoped(typeof(ISodaService<,>), typeof(SodaService<,>));
 
 
 var app = builder.Build();

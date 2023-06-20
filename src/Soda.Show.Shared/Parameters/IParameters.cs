@@ -1,8 +1,22 @@
-﻿namespace Soda.Show.Shared;
+﻿using System.Reflection;
+namespace Soda.Show.Shared;
 
 public interface IParameters
 {
+    IEnumerable<PropertyInfo> GetProperties();
+}
 
+public class Parameters : IParameters
+{
+    public IEnumerable<PropertyInfo> GetProperties()
+    {
+        var types = GetType().GetProperties().Where(p =>
+            !typeof(IPaging).IsAssignableFrom(p.DeclaringType) &&
+            !typeof(ISorting).IsAssignableFrom(p.DeclaringType) &&
+            !typeof(IDateRange).IsAssignableFrom(p.DeclaringType));
+
+        return types.Where(x => x.GetValue(this) != null);
+    }
 }
 
 public interface IPaging
@@ -24,4 +38,10 @@ public interface ISorting
     /// 排序
     /// </summary>
     public string? OrderBy { get; set; }
+}
+
+public interface IDateRange
+{
+    public DateTime? StartTime { get; set; }
+    public DateTime? EndTime { get; set; }
 }

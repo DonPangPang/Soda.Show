@@ -13,6 +13,7 @@ public interface ISodaRepository
     Task RollbackAsync();
 }
 
+[Service(ServiceLifetime.Scoped)]
 public class SodaRepository : ISodaRepository
 {
     private readonly SodaDbContext _dbContext;
