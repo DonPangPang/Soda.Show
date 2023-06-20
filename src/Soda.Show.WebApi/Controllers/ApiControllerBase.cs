@@ -80,7 +80,7 @@ public class ApiControllerBase<TEntity, TViewModel, TParameters> : ApiController
     }
 
     [HttpPut]
-    public virtual async Task<IActionResult> UpdateAsync([FromBody] TEntity entity)
+    public virtual async Task<IActionResult> UpdateAsync([FromBody] TViewModel entity)
     {
         var res = await _service.UpdateAsync(entity);
 
@@ -88,7 +88,7 @@ public class ApiControllerBase<TEntity, TViewModel, TParameters> : ApiController
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> AddAsync([FromBody] TEntity entity)
+    public virtual async Task<IActionResult> AddAsync([FromBody] TViewModel entity)
     {
         var res = await _service.AddAsync(entity);
 
