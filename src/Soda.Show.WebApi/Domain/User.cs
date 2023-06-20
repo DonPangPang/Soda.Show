@@ -1,6 +1,6 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using Soda.Show.Shared.Enums;
 using Soda.Show.WebApi.Domain.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Soda.Show.WebApi.Domain;
 

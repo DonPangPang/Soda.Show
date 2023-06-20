@@ -1,11 +1,10 @@
-﻿using System.Linq.Dynamic.Core;
-using System.Linq.Expressions;
-using System.Reflection;
-using Soda.Show.Shared;
-using Soda.Show.Shared.Attributes;
+﻿using Soda.Show.Shared.Attributes;
 using Soda.Show.Shared.Parameters;
 using Soda.Show.WebApi.Domain.Base;
 using Soda.Show.WebApi.Helpers;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Soda.Show.WebApi.Extensions;
 

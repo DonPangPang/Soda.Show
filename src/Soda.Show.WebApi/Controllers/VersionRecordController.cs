@@ -1,4 +1,3 @@
-using Soda.Show.Shared;
 using Soda.Show.Shared.Parameters;
 using Soda.Show.Shared.ViewModels;
 using Soda.Show.WebApi.Domain;

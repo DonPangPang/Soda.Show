@@ -1,7 +1,5 @@
-﻿using Humanizer;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Soda.AutoMapper;
-using Soda.Show.Shared;
 using Soda.Show.Shared.Parameters;
 using Soda.Show.Shared.ViewModels;
 using Soda.Show.WebApi.Domain.Base;

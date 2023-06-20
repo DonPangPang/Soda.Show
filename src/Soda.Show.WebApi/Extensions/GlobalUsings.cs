@@ -1,9 +1,8 @@
-
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Soda.Show.WebApi.Data;
 using Soda.Show.WebApi.Services;
+using System.Reflection;
 
 namespace Soda.Show.WebApi.Extensions;
 

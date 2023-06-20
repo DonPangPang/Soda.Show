@@ -1,7 +1,7 @@
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Soda.Show.WebApi.Domain;
 using Soda.Show.WebApi.Domain.Base;
+using System.Reflection;
 
 namespace Soda.Show.WebApi.Data
 {
