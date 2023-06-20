@@ -16,7 +16,7 @@ public static class IQueryableExtensions
     /// <param name="orderBy"> </param>
     /// <returns> </returns>
     public static IQueryable<T> ApplySort<T>(
-        this IQueryable<T> source, string orderBy) where T : class, IEntityBase
+        this IQueryable<T> source, string orderBy) where T : class
     {
         if (source == null)
         {
@@ -32,15 +32,15 @@ public static class IQueryableExtensions
 
         foreach (var orderByClause in orderByAfterSplit.Reverse())
         {
-            var trimedOrderByClause = orderByClause.Trim();
+            var trimOrderByClause = orderByClause.Trim();
 
-            var orderDescending = trimedOrderByClause.EndsWith(" desc");
+            var orderDescending = trimOrderByClause.EndsWith(" desc");
 
-            var indexOfFirstSpace = trimedOrderByClause.IndexOf(" ", StringComparison.Ordinal);
+            var indexOfFirstSpace = trimOrderByClause.IndexOf(" ", StringComparison.Ordinal);
 
             var propertyName = indexOfFirstSpace == -1
-                ? trimedOrderByClause
-                : trimedOrderByClause.Remove(indexOfFirstSpace);
+                ? trimOrderByClause
+                : trimOrderByClause.Remove(indexOfFirstSpace);
 
             source = source.OrderBy(propertyName
                                     + (orderDescending ? " descending" : " ascending"));
@@ -56,7 +56,7 @@ public static class IQueryableExtensions
     /// <param name="source"> </param>
     /// <param name="paging"> </param>
     /// <returns> </returns>
-    public static async Task<PagedList<T>> ToPagedListAsync<T>(this IQueryable<T> source, IPaging paging) where T : class, IEntityBase
+    public static async Task<PagedList<T>> ToPagedListAsync<T>(this IQueryable<T> source, IPaging paging) where T : class
     {
         return await PagedList<T>.CreateAsync(source, paging.Page, paging.PageSize);
     }
@@ -68,7 +68,7 @@ public static class IQueryableExtensions
     /// <param name="source">     </param>
     /// <param name="parameters"> </param>
     /// <returns> </returns>
-    public static async Task<PagedList<T>> QueryAsync<T>(this IQueryable<T> source, IParameters parameters) where T : class, IEntityBase
+    public static async Task<PagedList<T>> QueryAsync<T>(this IQueryable<T> source, IParameters parameters) where T : class
     {
         if (parameters is ISorting sorting)
             source = source.ApplySort(sorting.OrderBy ?? "");

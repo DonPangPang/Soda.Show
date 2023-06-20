@@ -87,7 +87,7 @@ public class SodaService<TEntity, TViewModel> : ISodaService<TEntity, TViewModel
 
     public async Task<IEnumerable<TViewModel>> GetAsync(IParameters parameters)
     {
-        return await _sodaRepository.Query<TEntity>().Map<TEntity, TViewModel>().ToListAsync();
+        return await _sodaRepository.Query<TEntity>().Map<TEntity, TViewModel>().QueryAsync(parameters);
     }
 
     public async Task<TViewModel?> GetAsync(Guid id)
