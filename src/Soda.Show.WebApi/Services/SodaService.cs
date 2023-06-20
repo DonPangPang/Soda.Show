@@ -1,0 +1,129 @@
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+using Soda.AutoMapper;
+using Soda.Show.Shared;
+using Soda.Show.Shared.ViewModels;
+using Soda.Show.WebApi.Base;
+
+namespace Soda.Show.WebApi;
+
+public interface ISodaService<TEntity, TViewModel> where TEntity : class, IEntityBase where TViewModel : class, IViewModel
+{
+    Task<IEnumerable<TViewModel>> GetAsync(IParameters parameters);
+
+    Task<TViewModel?> GetAsync(Guid id);
+    Task<IEnumerable<TViewModel>> GetAsync(IEnumerable<Guid> ids);
+    Task<bool> UpdateAsync(TEntity entity);
+    Task<bool> UpdateAsync(IEnumerable<TEntity> entities);
+    Task<bool> DeleteAsync(TEntity entity);
+    Task<bool> DeleteAsync(IEnumerable<TEntity> entities);
+    Task<bool> DeleteAsync(Guid id);
+    Task<bool> DeleteAsync(IEnumerable<Guid> ids);
+
+    Task<bool> AddAsync(TEntity entity);
+    Task<bool> AddAsync(IEnumerable<TEntity> entities);
+
+}
+
+public class SodaService<TEntity, TViewModel> : ISodaService<TEntity, TViewModel> where TEntity : class, IEntityBase where TViewModel : class, IViewModel
+{
+    private readonly ISodaRepository _sodaRepository;
+
+    public SodaService(ISodaRepository sodaRepository)
+    {
+        _sodaRepository = sodaRepository;
+    }
+
+    public async Task<bool> AddAsync(TEntity entity)
+    {
+        if (entity is null) throw new ArgumentNullException(nameof(entity));
+
+        _sodaRepository.Db.Add(entity);
+        return await _sodaRepository.SaveAsync();
+    }
+
+    public async Task<bool> AddAsync(IEnumerable<TEntity> entities)
+    {
+        if (entities is null || !entities.Any()) throw new ArgumentNullException(nameof(entities));
+
+        await _sodaRepository.Db.AddRangeAsync(entities);
+
+        return await _sodaRepository.SaveAsync();
+    }
+
+    public async Task<bool> DeleteAsync(TEntity entity)
+    {
+        if (entity is null) throw new ArgumentNullException(nameof(entity));
+        _sodaRepository.Db.Remove(entity);
+        return await _sodaRepository.SaveAsync();
+    }
+
+    public async Task<bool> DeleteAsync(IEnumerable<TEntity> entities)
+    {
+        if (entities is null || !entities.Any()) throw new ArgumentNullException(nameof(entities));
+        _sodaRepository.Db.RemoveRange(entities);
+        return await _sodaRepository.SaveAsync();
+    }
+
+    public async Task<bool> DeleteAsync(Guid id)
+    {
+        var entity = _sodaRepository.Query<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
+
+        if (entity is null) return true;
+
+        _sodaRepository.Db.Remove(entity);
+        return await _sodaRepository.SaveAsync();
+    }
+
+    public async Task<bool> DeleteAsync(IEnumerable<Guid> ids)
+    {
+        var entities = await _sodaRepository.Query<TEntity>().Where(x => ids.Contains(x.Id)).Map<TEntity, TViewModel>().ToListAsync();
+
+        if (entities is null || !entities.Any()) return true;
+
+        _sodaRepository.Db.RemoveRange(entities);
+        return await _sodaRepository.SaveAsync();
+    }
+
+    public async Task<IEnumerable<TViewModel>> GetAsync(IParameters parameters)
+    {
+        return await _sodaRepository.Query<TEntity>().Map<TEntity, TViewModel>().ToListAsync();
+    }
+
+    public async Task<TViewModel?> GetAsync(Guid id)
+    {
+        return await _sodaRepository.Query<TEntity>().Where(x => x.Id == id).Map<TEntity, TViewModel>().FirstOrDefaultAsync();
+    }
+
+    public async Task<IEnumerable<TViewModel>> GetAsync(IEnumerable<Guid> ids)
+    {
+        if (ids is null)
+        {
+            throw new ArgumentNullException(nameof(ids));
+        }
+
+        return await _sodaRepository.Query<TEntity>().Where(x => ids.Contains(x.Id)).Map<TEntity, TViewModel>().ToListAsync();
+    }
+
+    public async Task<bool> UpdateAsync(TEntity entity)
+    {
+        if (entity is null)
+        {
+            throw new ArgumentNullException(nameof(entity));
+        }
+
+        _sodaRepository.Db.Update(entity);
+        return await _sodaRepository.SaveAsync();
+    }
+
+    public async Task<bool> UpdateAsync(IEnumerable<TEntity> entities)
+    {
+        if (entities is null || !entities.Any())
+        {
+            throw new ArgumentNullException(nameof(entities));
+        }
+
+        _sodaRepository.Db.UpdateRange(entities);
+        return await _sodaRepository.SaveAsync();
+    }
+}
