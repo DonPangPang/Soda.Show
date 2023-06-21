@@ -2,8 +2,31 @@
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<MAppBar Fixed Class="rounded-xl" Height="360" Style="margin:20px;"
+         Src="https://cdn.masastack.com/stack/images/website/masa-blazor/cards/sunshine.jpg">
 
-<SurveyPrompt Title="This is fire-new Blazor UI!" />
+</MAppBar>
+
+<MContainer Style="width:80%;margin-top:400px;">
+    <MTimeline Dense="false">
+        @for (int i = 0; i < 5; i++)
+        {
+            <MTimelineItem>
+                <OppositeContent>
+                    <span>Tus eu perfecto</span>
+                </OppositeContent>
+                <ChildContent>
+                    <MCard Class="elevation-2">
+                        <MCardTitle Class="text-h5">
+                            Lorem ipsum
+                        </MCardTitle>
+                        <MCardText>
+                            Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.
+                        </MCardText>
+                    </MCard>
+                </ChildContent>
+            </MTimelineItem>
+        }
+    </MTimeline>
+</MContainer>
